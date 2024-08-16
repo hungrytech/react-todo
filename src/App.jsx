@@ -1,20 +1,37 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
+import TodoHeader from "./components/TodoHeaders";
+import TodoInput from "./components/TodoInput";
+import TodoList from "./components/TodoList";
+
+function fetchTodos() {
+  const result = [];
+  for (let i = 0; i < localStorage.length; i++) {
+    const value = localStorage.key(i);
+    result.push(value);
+  }
+
+  return result;
+}
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [todos, setTodos] = useState(fetchTodos());
 
-  const a = 10;
+  const handleRemove = (todo) => {
+    setTodos(todos.filter((item) => item !== todo));
+    localStorage.removeItem(todo);
+  };
+
+  const addTodo = (inputText) => {
+    localStorage.setItem(inputText, inputText);
+    setTodos((currentTodos) => [...currentTodos, inputText]);
+  };
 
   return (
     <div>
-      <h1>TODO 앱</h1>
-      <div>
-        <input type="text" />
-        <button>add</button>
-      </div>
+      <TodoHeader />
+      <TodoInput onTodoAdd={addTodo} />
+      <TodoList todos={todos} onTodoRemove={handleRemove} />
     </div>
   );
 }
