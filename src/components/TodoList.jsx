@@ -1,6 +1,3 @@
-import { useState } from "react";
-
-
 function TodoList({ todos, onTodoRemove }) {
   return (
     <div>
